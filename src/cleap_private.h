@@ -35,6 +35,7 @@ struct cleap_device_mesh {
 	int2 *d_edges_n, *d_edges_a, *d_edges_b, *d_edges_op;
 	int *d_trirel, *d_trireservs, *d_listo;
 	CLEAP_RESULT status;
+    float2 *d_vel;
 };
 
 
@@ -48,12 +49,7 @@ struct _cleap_mesh {
     cleap_device_mesh *dm;
     CLEAP_RESULT status;	// important flag!!
 
-    std::vector<int*> associated_int_buffers;
-    std::vector<float*> associated_float_buffers;
-    std::vector<double*> associated_double_buffers;
-    std::vector<int2*> associated_int2_buffers;
-    std::vector<float2*> associated_float2_buffers;
-    std::vector<double2*> associated_double2_buffers;
+    float2 *vel;
 };
 
 

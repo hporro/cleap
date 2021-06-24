@@ -197,13 +197,23 @@ extern "C" {
      * @result The vertex buffer pointer, of type GLuint.
      */
     GLuint cleap_get_vertex_buffer(cleap_mesh *m);
-
-    void register_associated_int_buffer(cleap_mesh *m, int* buffer);
-    void register_associated_float_buffer(cleap_mesh *m, float* buffer);
-    void register_associated_double_buffer(cleap_mesh *m, double* buffer);
-    void register_associated_int2_buffer(cleap_mesh *m, int* buffer);
-    void register_associated_float2_buffer(cleap_mesh *m, float* buffer);
-    void register_associated_double2_buffer(cleap_mesh *m, double* buffer);
+	/** Sets an associated velocity buffer for the mesh vertices.
+     * @param m a pointer of type cleap_mesh.	 
+     * @param p_vel an array of velocities.
+	 * @result <tt>CLEAP_SUCCESS</tt> if succesful, otherwise <tt>CLEAP_FAILURE</tt>.
+     */
+    void cleap_set_vel(cleap_mesh *m, float *p_vel);
+	/** Moves the mesh according to the velocity buffer.
+     * @param m a pointer of type cleap_mesh.
+     * @param min_p the lower left point of the simulation box.
+     * @param max_p the upper right point of the simulation box.
+     */
+	void cleap_move_mesh(cleap_mesh *m, float *min_p, float *max_p);
+	/** Corrects vertex overlaps.
+     * @param m a pointer of type cleap_mesh.
+     * @param radius radius of all the particles.
+     */
+	void cleap_correct_overlaps(cleap_mesh *m, float radius);
 
 #ifdef __cplusplus
 }

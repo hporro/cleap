@@ -50,10 +50,10 @@ invertedTriangleTest(float4 op1, float4 op2, float4 e1, float4 e2)
 
     // this is the case where two particles intersect each other, or said differently, both triangles get their area
     // close to zero
-    if((abs(t)<CLEAP_TRIANGLE_ZERO_AREA_EPS) && (abs(s)<CLEAP_TRIANGLE_ZERO_AREA_EPS) && (abs(d)<CLEAP_TRIANGLE_ZERO_AREA_EPS)){
+    //if((abs(t)<CLEAP_TRIANGLE_ZERO_AREA_EPS) && (abs(s)<CLEAP_TRIANGLE_ZERO_AREA_EPS) && (abs(d)<CLEAP_TRIANGLE_ZERO_AREA_EPS)){
         //printf("v0: %f %f, v1: %f %f, v2: %f %f, d:%f, s:%f, t:%f\n",v0.x,v0.y,v1.x,v1.y,v2.x,v2.y,d,s,t);
-        return -1;
-    }
+    //    return -1;
+    //}
 
     return ((d < 0 && s <= 0 && t <= 0 && s+t >= d) ||
            (d > 0 && s >= 0 && t >= 0 && s+t <= d) ||
@@ -86,15 +86,8 @@ __global__ void correctTrianglesKernel(float4* mesh_data, GLuint* triangles, int
 
         if( b_shared_array[threadIdx.x].x != -1 ){
             int test = invertedTriangleTest( mesh_data[triangles[op_shared_array[threadIdx.x].x]], mesh_data[triangles[op_shared_array[threadIdx.x].y]], mesh_data[triangles[a_shared_array[threadIdx.x].x]], mesh_data[triangles[a_shared_array[threadIdx.x].y]]);
-            if(test==-1){
-                if(has_to_swap_vertices[triangles[a_shared_array[threadIdx.x].y]]==-1) {
-                    listo[0] = -1;
-                    has_to_swap_vertices[triangles[a_shared_array[threadIdx.x].y]] = triangles[a_shared_array[threadIdx.x].x];
-                    has_to_swap_vertices[triangles[a_shared_array[threadIdx.x].x]] = triangles[a_shared_array[threadIdx.x].y];
-                }
-            }
             if(test>0) {
-                listo[0] = (listo[0]==-1?-1:0);
+                listo[0] = 0;
                 // exclusion part
                 if( atomicExch( &(trireservs[a_shared_array[threadIdx.x].y/3]), i ) == -1 && atomicExch( &(trireservs[b_shared_array[threadIdx.x].y/3]), i ) == -1 ){ //!  + 8 flop
                     // proceed to flip the edges

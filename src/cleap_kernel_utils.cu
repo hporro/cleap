@@ -171,5 +171,30 @@ inline __device__ __host__ double cross(float2 u, float2 v)
     return u.x * v.y - v.x * u.y;
 }
 
-#endif
+inline __device__ __host__ double dot(float2 u, float2 v)
+{
+    return u.x * v.x + u.y * v.y;
+}
 
+inline __device__ __host__ double length(float2 u)
+{
+	return sqrt(u.x*u.x+u.y*u.y);
+}
+
+inline __device__ __host__ float2 operator-(float2 a, float2 b){
+	return make_float2(a.x-b.x,a.y-b.y);
+}
+
+inline __device__ __host__ float2 operator/(float2 v, float a){
+	return make_float2(v.x/a,v.y/a);
+}
+
+inline __device__ __host__ float2 operator*(float2 v, float a){
+	return make_float2(v.x*a,v.y*a);
+}
+
+inline __device__ __host__ float2 normalize(float2 a){
+	return a/length(a);
+}
+
+#endif
